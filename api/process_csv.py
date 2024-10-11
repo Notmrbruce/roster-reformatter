@@ -22,23 +22,29 @@ def process_csv(csv_content, option):
     writer.writerows(processed_rows)
     return output.getvalue()
 
-def handler(event, context):
-    try:
-        body = json.loads(event['body'])
-        csv_content = base64.b64decode(body['file']).decode('utf-8')
-        option = body['option']
+def handler(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            csv_content = base64.b64decode(body['file']).decode('utf-8')
+            option = body['option']
 
-        processed_csv = process_csv(csv_content, option)
+            processed_csv = process_csv(csv_content, option)
 
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'text/csv',
+                },
+                'body': processed_csv,
+            }
+        except Exception as e:
+            return {
+                'statusCode': 500,
+                'body': json.dumps({'error': str(e)}),
+            }
+    else:
         return {
-            'statusCode': 200,
-            'headers': {
-                'Content-Type': 'text/csv',
-            },
-            'body': processed_csv,
-        }
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error': str(e)}),
+            'statusCode': 405,
+            'body': 'Method Not Allowed',
         }

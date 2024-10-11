@@ -6,7 +6,18 @@
   "outputDirectory": ".next",
   "functions": {
     "api/process_csv.py": {
-      "runtime": "python3.9"
+      "runtime": "vercel-python@3.9"
+    }
+  }
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next",
+  "functions": {
+    "api/process_csv.py": {
+      "runtime": "vercel-python@3.9"
     }
   }
 }
