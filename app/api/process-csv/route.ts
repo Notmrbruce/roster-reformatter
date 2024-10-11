@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     processedFile.headers.set('Content-Type', 'text/csv')
     processedFile.headers.set('Content-Disposition', 'attachment; filename="processed_roster.csv"')
 
-    const fileContent =   await NextResponse.next()
+    const fileContent = await NextResponse.next()
     fileContent.body = await NextResponse.next().blob()
 
     await unlink(tempFilePath)
