@@ -199,7 +199,7 @@ export default function RosterReformatter() {
               <ol className="list-decimal list-inside space-y-2">
                 <li>Upload your CSV roster file using the drag-and-drop area or file selector.</li>
                 <li>Choose the processing option that fits your needs (Full Roster, Days Off Only, or Work Days Only).</li>
-                <li>Click the "Process File" button to reformat your roster.</li>
+                <li>Click the &quot;Process File&quot; button to reformat your roster.</li>
                 <li>Download the processed file and import it into your preferred calendar application.</li>
               </ol>
             </div>
@@ -223,7 +223,7 @@ export default function RosterReformatter() {
               <ol className="list-decimal list-inside space-y-2">
                 <li>Upload your CSV roster file using the drag-and-drop area or file selector.</li>
                 <li>Choose the processing option that fits your needs (Full Roster, Days Off Only, or Work Days Only).</li>
-                <li>Click the "Process File" button to reformat your roster.</li>
+                <li>Click the &quot;Process File&quot; button to reformat your roster.</li>
                 <li>Download the processed file and import it into your preferred calendar application.</li>
               </ol>
             </div>
