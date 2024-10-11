@@ -57,7 +57,7 @@ export default function RosterReformatter() {
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
       setResult(url)
-    } catch (err) {
+    } catch {
       setError('An error occurred while processing the file. Please try again.')
     } finally {
       setProcessing(false)
@@ -93,7 +93,7 @@ export default function RosterReformatter() {
             ) : (
               <div>
                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                <p className="mt-2">Drag & drop a CSV file here, or click to select one</p>
+                <p className="mt-2">Drag &amp; drop a CSV file here, or click to select one</p>
               </div>
             )}
           </div>
@@ -173,7 +173,7 @@ export default function RosterReformatter() {
         {/* Image Section */}
         <div className="mt-12">
           <h2 className="text-2xl font-semibold mb-6">Example Calendars</h2>
-          
+
           {/* Instructions toggle button for small screens */}
           <button
             onClick={toggleInstructions}
@@ -236,7 +236,7 @@ export default function RosterReformatter() {
                 height={400}
                 className="rounded-lg shadow-lg w-full h-auto"
               />
-              <p className="mt-2 text-center italic text-sm">Separate Days off & Work only calendars*</p>
+              <p className="mt-2 text-center italic text-sm">Separate Days off &amp; Work only calendars*</p>
             </div>
           </div>
 
