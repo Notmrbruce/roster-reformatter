@@ -3,23 +3,21 @@ import json
 import csv
 import io
 import base64
+import pandas as pd
 from scripts import csv_reformat_full, csv_reformat_offonly, csv_reformat_work_only
 
 def process_csv(csv_content, option):
-    csv_file = io.StringIO(csv_content)
-    reader = csv.reader(csv_file)
-    rows = list(reader)
-
+    df = pd.read_csv(io.StringIO(csv_content))
+    
     if option == 'daysOff':
-        processed_rows = csv_reformat_offonly.process(rows)
+        processed_df = csv_reformat_offonly.process(df)
     elif option == 'workDays':
-        processed_rows = csv_reformat_work_only.process(rows)
+        processed_df = csv_reformat_work_only.process(df)
     else:
-        processed_rows = csv_reformat_full.process(rows)
+        processed_df = csv_reformat_full.process(df)
 
     output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerows(processed_rows)
+    processed_df.to_csv(output, index=False)
     return output.getvalue()
 
 def handler(request):
