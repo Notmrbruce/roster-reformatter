@@ -40,8 +40,12 @@ export async function POST(req: NextRequest) {
     outputResponse.headers.set('Content-Disposition', `attachment; filename="processed_roster_${uuidv4()}.csv"`)
 
     return outputResponse
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error processing file:', error)
-    return NextResponse.json({ error: 'File processing failed', details: error.message }, { status: 500 })
+    if (error instanceof Error) {
+      return NextResponse.json({ error: 'File processing failed', details: error.message }, { status: 500 })
+    } else {
+      return NextResponse.json({ error: 'File processing failed', details: 'An unknown error occurred' }, { status: 500 })
+    }
   }
 }
