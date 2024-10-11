@@ -14,7 +14,11 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer())
     const base64Content = buffer.toString('base64')
 
-    const response = await fetch(`${process.env.VERCEL_URL}/api/process_csv`, {
+    const apiUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}/api/process_csv`
+      : 'http://localhost:3000/api/process_csv'
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +30,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (!response.ok) {
-      throw new Error('Failed to process CSV')
+      throw new Error(`Failed to process CSV: ${response.statusText}`)
     }
 
     const processedCsv = await response.text()
@@ -38,6 +42,6 @@ export async function POST(req: NextRequest) {
     return outputResponse
   } catch (error) {
     console.error('Error processing file:', error)
-    return NextResponse.json({ error: 'File processing failed' }, { status: 500 })
+    return NextResponse.json({ error: 'File processing failed', details: error.message }, { status: 500 })
   }
 }

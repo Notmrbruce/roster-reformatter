@@ -20,10 +20,10 @@ def process_csv(csv_content, option):
     processed_df.to_csv(output, index=False)
     return output.getvalue()
 
-def handler(request):
-    if request.method == 'POST':
+def handler(event, context):
+    if event['httpMethod'] == 'POST':
         try:
-            body = json.loads(request.body)
+            body = json.loads(event['body'])
             csv_content = base64.b64decode(body['file']).decode('utf-8')
             option = body['option']
 
@@ -39,10 +39,16 @@ def handler(request):
         except Exception as e:
             return {
                 'statusCode': 500,
+                'headers': {
+                    'Content-Type': 'application/json',
+                },
                 'body': json.dumps({'error': str(e)}),
             }
     else:
         return {
             'statusCode': 405,
-            'body': 'Method Not Allowed',
+            'headers': {
+                'Content-Type': 'application/json',
+            },
+            'body': json.dumps({'error': 'Method Not Allowed'}),
         }
