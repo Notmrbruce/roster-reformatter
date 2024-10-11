@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const buffer = await file.arrayBuffer()
     const base64Content = Buffer.from(buffer).toString('base64')
 
-    const response = await fetch('/api/process_csv', {
+    const response = await fetch(`${process.env.VERCEL_URL}/api/process_csv`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

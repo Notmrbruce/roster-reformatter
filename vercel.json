@@ -5,11 +5,6 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
-  "functions": {
-    "api/process_csv.py": {
-      "runtime": "python3.9"
-    }
-  },
   "routes": [
     {
       "src": "/api/process_csv",
