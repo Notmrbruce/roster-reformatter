@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { exec } from 'child_process'
-import { writeFile, unlink } from 'fs/promises'
+import { writeFile, unlink, readFile } from 'fs/promises'
 import { join } from 'path'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -44,17 +44,15 @@ export async function POST(req: NextRequest) {
       })
     })
 
-    const processedFile = await NextResponse.next()
-    processedFile.headers.set('Content-Type', 'text/csv')
-    processedFile.headers.set('Content-Disposition', 'attachment; filename="processed_roster.csv"')
-
-    const fileContent = await NextResponse.next()
-    fileContent.body = await NextResponse.next().blob()
+    const fileContent = await readFile(outputFilePath)
+    const response = new NextResponse(fileContent)
+    response.headers.set('Content-Type', 'text/csv')
+    response.headers.set('Content-Disposition', 'attachment; filename="processed_roster.csv"')
 
     await unlink(tempFilePath)
     await unlink(outputFilePath)
 
-    return fileContent
+    return response
   } catch (error) {
     console.error('Error processing file:', error)
     return NextResponse.json({ error: 'File processing failed' }, { status: 500 })
