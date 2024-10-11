@@ -20,10 +20,10 @@ def process_csv(csv_content, option):
     processed_df.to_csv(output, index=False)
     return output.getvalue()
 
-def handler(event, context):
-    if event['httpMethod'] == 'POST':
+def handler(request):
+    if request.get('method', '') == 'POST':
         try:
-            body = json.loads(event['body'])
+            body = json.loads(request.get('body', '{}'))
             csv_content = base64.b64decode(body['file']).decode('utf-8')
             option = body['option']
 

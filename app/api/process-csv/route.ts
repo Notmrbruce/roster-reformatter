@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
 
+export const config = {
+  runtime: 'edge',
+}
+
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
   const file = formData.get('file') as File
@@ -11,14 +15,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const buffer = Buffer.from(await file.arrayBuffer())
-    const base64Content = buffer.toString('base64')
+    const buffer = await file.arrayBuffer()
+    const base64Content = Buffer.from(buffer).toString('base64')
 
-    const apiUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}/api/process_csv`
-      : 'http://localhost:3000/api/process_csv'
-
-    const response = await fetch(apiUrl, {
+    const response = await fetch('/api/process_csv', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
