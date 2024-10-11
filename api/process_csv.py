@@ -22,18 +22,23 @@ def process_csv(csv_content, option):
     writer.writerows(processed_rows)
     return output.getvalue()
 
-class handler(BaseHTTPRequestHandler):
-    def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
-        data = json.loads(post_data.decode('utf-8'))
-
-        csv_content = base64.b64decode(data['file']).decode('utf-8')
-        option = data['option']
+def handler(event, context):
+    try:
+        body = json.loads(event['body'])
+        csv_content = base64.b64decode(body['file']).decode('utf-8')
+        option = body['option']
 
         processed_csv = process_csv(csv_content, option)
 
-        self.send_response(200)
-        self.send_header('Content-type', 'text/csv')
-        self.end_headers()
-        self.wfile.write(processed_csv.encode('utf-8'))
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Content-Type': 'text/csv',
+            },
+            'body': processed_csv,
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)}),
+        }
