@@ -12,5 +12,8 @@
   ],
   "env": {
     "PYTHONPATH": "api"
-  }
+  },
+  "builds": [
+    { "src": "api/process_csv.py", "use": "@vercel/python@3.1.0" }
+  ]
 }
