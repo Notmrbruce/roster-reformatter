@@ -18,8 +18,8 @@ pip install -r requirements.txt
 # Install Node.js dependencies
 npm ci
 
-# Install Tailwind CSS locally
-npm install tailwindcss postcss autoprefixer
+# Install Tailwind CSS and its dependencies
+npm install --save-dev tailwindcss@latest postcss@latest autoprefixer@latest
 
 # Generate Tailwind CSS configuration if it doesn't exist
 if [ ! -f tailwind.config.js ] && [ ! -f tailwind.config.ts ]; then
