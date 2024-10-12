@@ -18,11 +18,12 @@ pip install -r requirements.txt
 # Install Node.js dependencies
 npm ci
 
-# Install TypeScript and type definitions
-npm install --save-dev typescript@latest @types/react@latest @types/node@latest
+# Install TypeScript and ESLint
+npm install --save-dev typescript@latest @types/react@latest @types/node@latest eslint@latest
 
-# Verify TypeScript installation
+# Verify TypeScript and ESLint installation
 npx tsc --version
+npx eslint --version
 
 # Install additional dependencies
 npm install uuid
@@ -82,5 +83,5 @@ if [ ! -f tsconfig.json ]; then
 }' > tsconfig.json
 fi
 
-# Build Next.js app with TypeScript checking
+# Build Next.js app with TypeScript checking and ESLint
 npm run build || npm run build -- --debug
