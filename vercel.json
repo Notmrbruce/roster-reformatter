@@ -1,19 +1,14 @@
 {
-  "functions": {
-    "api/process_csv.py": {
-      "runtime": "python3.9"
-    }
-  },
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@vercel/next" },
+    { "src": "api/process_csv.py", "use": "@vercel/python@3.1.0" }
+  ],
   "routes": [
-    {
-      "src": "/api/process_csv",
-      "dest": "/api/process_csv.py"
-    }
+    { "src": "/api/process_csv", "dest": "/api/process_csv.py" },
+    { "src": "/(.*)", "dest": "/" }
   ],
   "env": {
     "PYTHONPATH": "api"
-  },
-  "builds": [
-    { "src": "api/process_csv.py", "use": "@vercel/python@3.1.0" }
-  ]
+  }
 }
