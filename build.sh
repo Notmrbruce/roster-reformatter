@@ -16,7 +16,7 @@ python get-pip.py
 pip install -r requirements.txt
 
 # Install Node.js dependencies
-npm install
+npm ci
 
 # Build Next.js app
 npm run build
