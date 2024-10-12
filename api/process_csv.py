@@ -6,9 +6,9 @@ from scripts.script_wrapper import wrapper
 
 def handle_request(event, context):
     try:
-        body = json.loads(event['body'])
-        csv_content = base64.b64decode(body['file']).decode('utf-8')
-        option = body['option']
+        body = json.loads(event.get('body', '{}'))
+        csv_content = base64.b64decode(body.get('file', '')).decode('utf-8')
+        option = body.get('option', '')
 
         # Parse CSV content
         lines = csv_content.strip().split('\n')
@@ -38,7 +38,7 @@ def handle_request(event, context):
         }
 
 def handler(event, context):
-    if event['httpMethod'] == 'POST':
+    if event.get('httpMethod') == 'POST':
         return handle_request(event, context)
     else:
         return {
