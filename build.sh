@@ -21,6 +21,12 @@ npm ci
 # Install Tailwind CSS and its dependencies
 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
+# Ensure autoprefixer is available
+npm install -g autoprefixer
+
+# Link autoprefixer to the project
+npm link autoprefixer
+
 # Generate Tailwind CSS configuration if it doesn't exist
 if [ ! -f tailwind.config.js ] && [ ! -f tailwind.config.ts ]; then
   npx tailwindcss init -p
@@ -38,7 +44,7 @@ fi
 npx tailwindcss -i styles/globals.css -o styles/output.css
 
 # Ensure Tailwind CSS is available in the Next.js build process
-export NODE_PATH=$(npm root -g)
+export NODE_PATH=$(npm root -g):$(npm root)
 
 # Link Tailwind CSS to the project
 npm link tailwindcss
