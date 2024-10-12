@@ -15,11 +15,14 @@ python get-pip.py
 # Install Python dependencies
 pip install -r requirements.txt
 
+# Clear npm cache
+npm cache clean --force
+
 # Install Node.js dependencies
-npm ci
+npm ci --legacy-peer-deps
 
 # Install TypeScript and ESLint
-npm install --save-dev typescript@latest @types/react@latest @types/node@latest eslint@latest
+npm install --save-dev typescript@latest @types/react@latest @types/node@latest eslint@^8.57.0
 
 # Verify TypeScript and ESLint installation
 npx tsc --version
@@ -30,12 +33,6 @@ npm install uuid
 
 # Install Tailwind CSS and its dependencies
 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
-
-# Ensure autoprefixer is available
-npm install -g autoprefixer
-
-# Link autoprefixer to the project
-npm link autoprefixer
 
 # Generate Tailwind CSS configuration if it doesn't exist
 if [ ! -f tailwind.config.js ] && [ ! -f tailwind.config.ts ]; then
@@ -52,12 +49,6 @@ fi
 
 # Build Tailwind CSS
 npx tailwindcss -i styles/globals.css -o styles/output.css
-
-# Ensure Tailwind CSS is available in the Next.js build process
-export NODE_PATH=$(npm root -g):$(npm root)
-
-# Link Tailwind CSS to the project
-npm link tailwindcss
 
 # Create a basic tsconfig.json if it doesn't exist
 if [ ! -f tsconfig.json ]; then
