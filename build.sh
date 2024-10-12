@@ -18,5 +18,8 @@ pip install -r requirements.txt
 # Install Node.js dependencies
 npm ci
 
+# Explicitly install tailwindcss and its peer dependencies
+npm install --save-dev tailwindcss@latest postcss@latest autoprefixer@latest
+
 # Build Next.js app
 npm run build
