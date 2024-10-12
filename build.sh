@@ -18,6 +18,12 @@ pip install -r requirements.txt
 # Install Node.js dependencies
 npm ci
 
+# Install TypeScript and type definitions
+npm install --save-dev typescript@latest @types/react@latest @types/node@latest
+
+# Verify TypeScript installation
+npx tsc --version
+
 # Install additional dependencies
 npm install uuid
 
@@ -55,5 +61,5 @@ export NODE_PATH=$(npm root -g):$(npm root)
 # Link Tailwind CSS to the project
 npm link tailwindcss
 
-# Build Next.js app
-npm run build
+# Build Next.js app with TypeScript checking
+npm run build || npm run build -- --debug
