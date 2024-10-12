@@ -1,14 +1,16 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "outputDirectory": ".next",
+  "functions": {
+    "api/process_csv.py": {
+      "runtime": "python3.9"
+    }
+  },
   "routes": [
     {
       "src": "/api/process_csv",
-      "dest": "api/process_csv.py"
+      "dest": "/api/process_csv.py"
     }
-  ]
+  ],
+  "env": {
+    "PYTHONPATH": "api"
+  }
 }
