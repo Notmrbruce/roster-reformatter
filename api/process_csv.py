@@ -1,23 +1,25 @@
-from http.server import BaseHTTPRequestHandler
 import json
 import csv
 import io
 import base64
-import pandas as pd
 from scripts import csv_reformat_full, csv_reformat_offonly, csv_reformat_work_only
 
 def process_csv(csv_content, option):
-    df = pd.read_csv(io.StringIO(csv_content))
+    reader = csv.reader(io.StringIO(csv_content))
+    rows = list(reader)
+    headers = rows[0]
+    data = rows[1:]
     
     if option == 'daysOff':
-        processed_df = csv_reformat_offonly.process(df)
+        processed_rows = csv_reformat_offonly.process(headers, data)
     elif option == 'workDays':
-        processed_df = csv_reformat_work_only.process(df)
+        processed_rows = csv_reformat_work_only.process(headers, data)
     else:
-        processed_df = csv_reformat_full.process(df)
+        processed_rows = csv_reformat_full.process(headers, data)
 
     output = io.StringIO()
-    processed_df.to_csv(output, index=False)
+    writer = csv.writer(output)
+    writer.writerows(processed_rows)
     return output.getvalue()
 
 def handler(event, context):
