@@ -19,7 +19,7 @@ pip install -r requirements.txt
 npm ci
 
 # Install Tailwind CSS and its dependencies
-npm install --save-dev tailwindcss@latest postcss@latest autoprefixer@latest
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
 # Generate Tailwind CSS configuration if it doesn't exist
 if [ ! -f tailwind.config.js ] && [ ! -f tailwind.config.ts ]; then
@@ -36,6 +36,9 @@ fi
 
 # Build Tailwind CSS
 npx tailwindcss -i styles/globals.css -o styles/output.css
+
+# Verify Tailwind CSS installation
+npx tailwindcss --help
 
 # Build Next.js app
 npm run build
