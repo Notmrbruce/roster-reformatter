@@ -34,6 +34,9 @@ npm install uuid
 # Install Tailwind CSS and its dependencies
 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
+# Ensure Tailwind CSS is installed globally
+npm install -g tailwindcss
+
 # Generate Tailwind CSS configuration if it doesn't exist
 if [ ! -f tailwind.config.js ] && [ ! -f tailwind.config.ts ]; then
   npx tailwindcss init -p
