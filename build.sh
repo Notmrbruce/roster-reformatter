@@ -19,4 +19,4 @@ pip install -r requirements.txt
 npm install
 
 # Build Next.js app
-npm run next build
+npm run build
