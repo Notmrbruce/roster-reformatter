@@ -37,8 +37,11 @@ fi
 # Build Tailwind CSS
 npx tailwindcss -i styles/globals.css -o styles/output.css
 
-# Verify Tailwind CSS installation
-npx tailwindcss --help
+# Ensure Tailwind CSS is available in the Next.js build process
+export NODE_PATH=$(npm root -g)
+
+# Link Tailwind CSS to the project
+npm link tailwindcss
 
 # Build Next.js app
 npm run build
