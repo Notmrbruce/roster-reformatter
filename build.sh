@@ -27,9 +27,6 @@ npx tsc --version
 # Install additional dependencies
 npm install uuid
 
-# Install TypeScript and type definitions
-npm install --save-dev typescript @types/react @types/node
-
 # Install Tailwind CSS and its dependencies
 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
@@ -60,6 +57,30 @@ export NODE_PATH=$(npm root -g):$(npm root)
 
 # Link Tailwind CSS to the project
 npm link tailwindcss
+
+# Create a basic tsconfig.json if it doesn't exist
+if [ ! -f tsconfig.json ]; then
+  echo '{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}' > tsconfig.json
+fi
 
 # Build Next.js app with TypeScript checking
 npm run build || npm run build -- --debug
