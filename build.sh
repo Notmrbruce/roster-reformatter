@@ -21,6 +21,9 @@ npm ci
 # Install additional dependencies
 npm install uuid
 
+# Install TypeScript and type definitions
+npm install --save-dev typescript @types/react @types/node
+
 # Install Tailwind CSS and its dependencies
 npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
