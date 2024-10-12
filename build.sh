@@ -12,5 +12,11 @@ pyenv global $PYTHON_VERSION
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Install Node.js dependencies
+npm install
+
+# Build Next.js app
+npm run next build
