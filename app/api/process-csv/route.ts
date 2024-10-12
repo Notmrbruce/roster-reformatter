@@ -4,15 +4,15 @@ import { v4 as uuidv4 } from 'uuid'
 export const runtime = 'edge'
 
 export async function POST(req: NextRequest) {
-  const formData = await req.formData()
-  const file = formData.get('file') as File
-  const option = formData.get('option') as string
-
-  if (!file) {
-    return NextResponse.json({ error: 'No file uploaded' }, { status: 400 })
-  }
-
   try {
+    const formData = await req.formData()
+    const file = formData.get('file') as File
+    const option = formData.get('option') as string
+
+    if (!file) {
+      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 })
+    }
+
     const buffer = await file.arrayBuffer()
     const base64Content = Buffer.from(buffer).toString('base64')
 
@@ -28,7 +28,9 @@ export async function POST(req: NextRequest) {
     })
 
     if (!response.ok) {
-      throw new Error(`Failed to process CSV: ${response.statusText}`)
+      const errorData = await response.json()
+      console.error('Error from Python function:', errorData)
+      throw new Error(`Failed to process CSV: ${errorData.error}`)
     }
 
     const processedCsv = await response.text()

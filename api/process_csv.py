@@ -1,56 +1,44 @@
 import json
-import csv
-import io
 import base64
-from scripts import csv_reformat_full, csv_reformat_offonly, csv_reformat_work_only
-
-def process_csv(csv_content, option):
-    reader = csv.reader(io.StringIO(csv_content))
-    rows = list(reader)
-    headers = rows[0]
-    data = rows[1:]
-    
-    if option == 'daysOff':
-        processed_rows = csv_reformat_offonly.process(headers, data)
-    elif option == 'workDays':
-        processed_rows = csv_reformat_work_only.process(headers, data)
-    else:
-        processed_rows = csv_reformat_full.process(headers, data)
-
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerows(processed_rows)
-    return output.getvalue()
+import traceback
+from scripts.script_wrapper import wrapper
 
 def handler(event, context):
-    if event['httpMethod'] == 'POST':
-        try:
-            body = json.loads(event['body'])
-            csv_content = base64.b64decode(body['file']).decode('utf-8')
-            option = body['option']
-
-            processed_csv = process_csv(csv_content, option)
-
+    try:
+        if event['httpMethod'] != 'POST':
             return {
-                'statusCode': 200,
-                'headers': {
-                    'Content-Type': 'text/csv',
-                },
-                'body': processed_csv,
+                'statusCode': 405,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps({'error': 'Method Not Allowed'})
             }
-        except Exception as e:
-            return {
-                'statusCode': 500,
-                'headers': {
-                    'Content-Type': 'application/json',
-                },
-                'body': json.dumps({'error': str(e)}),
-            }
-    else:
+
+        body = json.loads(event['body'])
+        csv_content = base64.b64decode(body['file']).decode('utf-8')
+        option = body['option']
+
+        # Parse CSV content
+        lines = csv_content.strip().split('\n')
+        headers = lines[0].split(',')
+        data = [line.split(',') for line in lines[1:]]
+
+        # Process using the wrapper
+        processed_csv = wrapper(headers, data, option)
+
         return {
-            'statusCode': 405,
-            'headers': {
-                'Content-Type': 'application/json',
-            },
-            'body': json.dumps({'error': 'Method Not Allowed'}),
+            'statusCode': 200,
+            'headers': {'Content-Type': 'text/csv'},
+            'body': '\n'.join([','.join(row) for row in processed_csv])
+        }
+
+    except Exception as e:
+        error_details = traceback.format_exc()
+        print(f"Error processing request: {str(e)}\n{error_details}")
+        return {
+            'statusCode': 500,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps({
+                'error': 'Internal Server Error',
+                'details': str(e),
+                'traceback': error_details
+            })
         }
